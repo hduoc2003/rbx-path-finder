@@ -4,23 +4,32 @@ use std::ops::Add;
 pub type NodeId = usize;
 
 #[derive(Debug, PartialEq)]
-pub struct PathTrace<U: G> {
+pub struct PathTrace<U: EdgeWeight> {
     pub dist: U,
     pub path: Option<Vec<NodeId>>,
 }
 
-pub struct EdgeInfo<U: G> {
+pub struct EdgeInfo<U: EdgeWeight> {
     pub u: NodeId,
     pub v: NodeId,
     pub w: U,
 }
 
-pub trait G: Add<Output = Self> + Copy + PartialOrd + Ord + Debug {}
+pub trait ZeroWeight {
+    fn zero() -> Self;
+}
 
-pub trait ShortestPathAlgo<U: G> {
+pub trait EdgeWeight: Add<Output = Self> + Copy + PartialOrd + Ord + Debug + ZeroWeight {}
+
+pub trait ShortestPathAlgo<U: EdgeWeight> {
     const NAME: &'static str;
-    fn find(&self, u: NodeId, v: NodeId, with_trace: bool) -> PathTrace<U>;
+    fn find(&mut self, u: NodeId, v: NodeId, with_trace: bool) -> Option<PathTrace<U>>;
     fn add_edges(&mut self, edges: &Vec<EdgeInfo<U>>);
 }
 
-impl G for u128 {}
+impl ZeroWeight for u128 {
+    fn zero() -> Self {
+        0
+    }
+}
+impl EdgeWeight for u128 {}
