@@ -9,7 +9,7 @@ pub struct FloydWarshall<U: EdgeWeight = u128> {
 }
 
 impl<U: EdgeWeight> FloydWarshall<U> {
-    const MAX_NODE_ID: NodeId = 5000;
+    const MAX_NODE_ID: NodeId = 500;
     pub fn new(
         max_node_id: NodeId,
         edges: &Vec<EdgeInfo<U>>,
