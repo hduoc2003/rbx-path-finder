@@ -27,7 +27,7 @@ impl<U: EdgeWeight> FloydWarshall<U> {
                 n: max_node_id,
                 dist,
                 trace,
-                highest_total_weight
+                highest_total_weight,
             })
         }
     }

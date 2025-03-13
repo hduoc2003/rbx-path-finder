@@ -81,9 +81,10 @@ impl<U: EdgeWeight> Dijkstra<U> {
                 .copied();
             if let Some(useless) = useless {
                 cached_node.retain(|node| node != &useless);
+                self.caches[useless] = None;
             }
         }
-        
+
         self.caches[s] = Some(PathCache {
             count: 1,
             dist,
@@ -152,9 +153,10 @@ impl<U: EdgeWeight> ShortestPathAlgo<U> for Dijkstra<U> {
             self.adj[e.u].push((e.v, e.w));
             self.adj[e.v].push((e.u, e.w));
         }
-        
+
         for cached_node in &self.cached_nodes {
             self.caches[*cached_node] = None;
         }
+        self.cached_nodes = vec![];
     }
 }
